@@ -3014,7 +3014,6 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
 	trace_android_vh_ufs_prepare_command(hba, scsi_cmd_to_rq(cmd), lrbp,
 					     &err);
 	if (err) {
-		lrbp->cmd = NULL;
 		ufshcd_release(hba);
 		goto out;
 	}
@@ -4650,9 +4649,6 @@ static int ufshcd_change_power_mode(struct ufs_hba *hba,
 		dev_err(hba->dev,
 			"%s: power mode change failed %d\n", __func__, ret);
 	} else {
-		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
-								pwr_mode);
-
 		memcpy(&hba->pwr_info, pwr_mode,
 			sizeof(struct ufs_pa_layer_attr));
 	}
@@ -4678,6 +4674,10 @@ int ufshcd_config_pwr_mode(struct ufs_hba *hba,
 		memcpy(&final_params, desired_pwr_mode, sizeof(final_params));
 
 	ret = ufshcd_change_power_mode(hba, &final_params);
+
+	if (!ret)
+		ufshcd_vops_pwr_change_notify(hba, POST_CHANGE, NULL,
+					&final_params);
 
 	return ret;
 }
@@ -8314,11 +8314,21 @@ static int ufs_get_device_desc(struct ufs_hba *hba)
 
 		ufshpb_get_dev_info(hba, desc_buf);
 
-		if (!ufshpb_is_legacy(hba))
+		if (!ufshpb_is_legacy(hba)) {
 			err = ufshcd_query_flag_retry(hba,
 						      UPIU_QUERY_OPCODE_READ_FLAG,
 						      QUERY_FLAG_IDN_HPB_EN, 0,
 						      &hpb_en);
+
+			if (!err && hpb_en) {
+				err = ufshcd_query_flag_retry(hba,
+								UPIU_QUERY_OPCODE_CLEAR_FLAG,
+								QUERY_FLAG_IDN_HPB_EN, 0,
+								NULL);
+				if (err)
+					pr_err(" HPB Flag clear failed!");
+			}
+		}
 
 		if (ufshpb_is_legacy(hba) || (!err && hpb_en))
 			dev_info->hpb_enabled = true;
@@ -10568,14 +10578,17 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
 	}
 
 	/*
-	 * Set the default power management level for runtime and system PM.
+	 * Set the default power management level for runtime and system PM if
+	 * not set by the host controller drivers.
 	 * Default power saving mode is to keep UFS link in Hibern8 state
 	 * and UFS device in sleep state.
 	 */
-	hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
+	if (!hba->rpm_lvl)
+		hba->rpm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
 						UFS_SLEEP_PWR_MODE,
 						UIC_LINK_HIBERN8_STATE);
-	hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
+	if (!hba->spm_lvl)
+		hba->spm_lvl = ufs_get_desired_pm_lvl_for_dev_link_state(
 						UFS_SLEEP_PWR_MODE,
 						UIC_LINK_HIBERN8_STATE);
 
