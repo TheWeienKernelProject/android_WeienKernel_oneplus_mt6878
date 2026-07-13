@@ -1,5 +1,45 @@
-# How do I submit patches to Android Common Kernels
+# The Weien Kernel Project #
+# info #
+Turbo6X exhanced kernel
+一加Turbo6X的增强内核
 
+# How Install 安装指南
+1.下载ak3包 Install AnyKernel3   
+2.在Recovery里面卡刷刷入 Recovery Sideload      
+3.等待启动 boot Phone           
+
+## U Can Build With This: 你可以这样编译 ##
+```
+cd android_WeienKernel_oneplus_mt6878
+```
+```
+cp android_WeienKernel_modules_and_devicetree_oneplus_mt6878/vendor /
+```
+```
+make turbo6x-mt6878_defconfig addon.config
+```
+```
+make -j$(nproc) Image | tee ~/build.log
+```
+
+| Kernel Version 内核版本 | 
+|----------------|
+| Linux Kernel 6.1.134 |
+
+## kernel support
+| Supported 支持 | Satus 状态 |
+|---------|-------------|
+| **ACPI (Testing测试中)** | ✅ |
+| **KVM** | ✅ |
+| **DroidSpaces** | ✅ |
+| **Kprobes** | ✅ |
+| **BPF** | ✅ |
+| **ResukiSU** | ✅ |
+| **sufus** | ✅ |
+
+*Testing测试中代表无法使用但已集成
+
+# How do I submit patches to Android Common Kernels
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
    These patches will be merged automatically in the corresponding common kernels. If the patch is already
    in upstream Linux, post a backport of the patch that conforms to the patch requirements below.
