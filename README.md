@@ -16,6 +16,9 @@ cd android_WeienKernel_oneplus_mt6878
 cp android_WeienKernel_modules_and_devicetree_oneplus_mt6878/vendor /
 ```
 ```
+使用内核集成脚本 Use Kernel Setup Scripts
+```
+```
 make turbo6x-mt6878_defconfig addon.config
 ```
 ```
