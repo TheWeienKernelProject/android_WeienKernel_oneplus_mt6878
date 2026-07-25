@@ -40,6 +40,8 @@
 #include <linux/blkdev.h>
 #include <linux/context_tracking.h>
 #include <linux/cpuset.h>
+#include <linux/cgroup.h>
+#include <linux/cgroup-defs.h>
 #include <linux/delayacct.h>
 #include <linux/init_task.h>
 #include <linux/interrupt.h>
