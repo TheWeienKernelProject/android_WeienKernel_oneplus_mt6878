@@ -35,7 +35,7 @@ make -j$(nproc) Image | tee ~/build.log
 | **KVM(EL2 Locked)** | ✅ |
 | **DroidSpaces** | ✅ |
 
-刚开始搞这个内核 就刚开kvm
+敬请期待其他配置
 
 # How do I submit patches to Android Common Kernels
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
