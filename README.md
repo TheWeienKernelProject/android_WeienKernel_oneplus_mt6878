@@ -33,6 +33,7 @@ make -j$(nproc) Image | tee ~/build.log
 | Supported 支持 | Satus 状态 |
 |---------|-------------|
 | **KVM(EL2 Locked)** | ✅ |
+| **DroidSpaces** | ✅ |
 
 刚开始搞这个内核 就刚开kvm
 
