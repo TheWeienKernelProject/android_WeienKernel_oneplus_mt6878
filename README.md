@@ -32,15 +32,9 @@ make -j$(nproc) Image | tee ~/build.log
 ## kernel support
 | Supported 支持 | Satus 状态 |
 |---------|-------------|
-| **ACPI (Testing测试中)** | ✅ |
-| **KVM** | ✅ |
-| **DroidSpaces** | ✅ |
-| **Kprobes** | ✅ |
-| **BPF** | ✅ |
-| **ResukiSU** | ✅ |
-| **sufus** | ✅ |
+| **KVM(EL2 Locked)** | ✅ |
 
-*Testing测试中代表无法使用但已集成
+刚开始搞这个内核 就刚开kvm
 
 # How do I submit patches to Android Common Kernels
 1. BEST: Make all of your changes to upstream Linux. If appropriate, backport to the stable releases.
