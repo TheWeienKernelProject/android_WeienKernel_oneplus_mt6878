@@ -5,6 +5,8 @@
 #ifndef _KERNEL_SCHED_SCHED_H
 #define _KERNEL_SCHED_SCHED_H
 
+#include <linux/cgroup.h>
+#include <linux/cgroup-defs.h>
 #include <linux/sched/affinity.h>
 #include <linux/sched/autogroup.h>
 #include <linux/sched/cpufreq.h>
@@ -27,8 +29,6 @@
 #include <linux/bug.h>
 #include <linux/capability.h>
 #include <linux/cgroup_api.h>
-#include <linux/cgroup.h>
-#include <linux/cgroup-defs.h>
 #include <linux/context_tracking.h>
 #include <linux/cpufreq.h>
 #include <linux/cpumask_api.h>
