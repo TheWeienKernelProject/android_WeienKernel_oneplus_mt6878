@@ -59,9 +59,9 @@ class Helper(APIElement):
         Break down helper function protocol into smaller chunks: return type,
         name, distincts arguments.
         """
-        arg_re = re.compile('((\w+ )*?(\w+|...))( (\**)(\w+))?$')
+        arg_re = re.compile(r'((\w+ )*?(\w+|...))( (\**)(\w+))?$')
         res = {}
-        proto_re = re.compile('(.+) (\**)(\w+)\(((([^,]+)(, )?){1,5})\)$')
+        proto_re = re.compile(r'(.+) (\**)(\w+)\(((([^,]+)(, )?){1,5})\)$')
 
         capture = proto_re.match(self.proto)
         res['ret_type'] = capture.group(1)
@@ -113,11 +113,11 @@ class HeaderParser(object):
         return Helper(proto=proto, desc=desc, ret=ret)
 
     def parse_symbol(self):
-        p = re.compile(' \* ?(BPF\w+)$')
+        p = re.compile(r' \* ?(BPF\w+)$')
         capture = p.match(self.line)
         if not capture:
             raise NoSyscallCommandFound
-        end_re = re.compile(' \* ?NOTES$')
+        end_re = re.compile(r' \* ?NOTES$')
         end = end_re.match(self.line)
         if end:
             raise NoSyscallCommandFound
@@ -132,7 +132,7 @@ class HeaderParser(object):
         #   - Same as above, with "const" and/or "struct" in front of type
         #   - "..." (undefined number of arguments, for bpf_trace_printk())
         # There is at least one term ("void"), and at most five arguments.
-        p = re.compile(' \* ?((.+) \**\w+\((((const )?(struct )?(\w+|\.\.\.)( \**\w+)?)(, )?){1,5}\))$')
+        p = re.compile(r' \* ?((.+) \**\w+\((((const )?(struct )?(\w+|\.\.\.)( \**\w+)?)(, )?){1,5}\))$')
         capture = p.match(self.line)
         if not capture:
             raise NoHelperFound
@@ -140,7 +140,7 @@ class HeaderParser(object):
         return capture.group(1)
 
     def parse_desc(self, proto):
-        p = re.compile(' \* ?(?:\t| {5,8})Description$')
+        p = re.compile(r' \* ?(?:\t| {5,8})Description$')
         capture = p.match(self.line)
         if not capture:
             raise Exception("No description section found for " + proto)
@@ -153,7 +153,7 @@ class HeaderParser(object):
             if self.line == ' *\n':
                 desc += '\n'
             else:
-                p = re.compile(' \* ?(?:\t| {5,8})(?:\t| {8})(.*)')
+                p = re.compile(r' \* ?(?:\t| {5,8})(?:\t| {8})(.*)')
                 capture = p.match(self.line)
                 if capture:
                     desc_present = True
@@ -166,7 +166,7 @@ class HeaderParser(object):
         return desc
 
     def parse_ret(self, proto):
-        p = re.compile(' \* ?(?:\t| {5,8})Return$')
+        p = re.compile(r' \* ?(?:\t| {5,8})Return$')
         capture = p.match(self.line)
         if not capture:
             raise Exception("No return section found for " + proto)
@@ -179,7 +179,7 @@ class HeaderParser(object):
             if self.line == ' *\n':
                 ret += '\n'
             else:
-                p = re.compile(' \* ?(?:\t| {5,8})(?:\t| {8})(.*)')
+                p = re.compile(r' \* ?(?:\t| {5,8})(?:\t| {8})(.*)')
                 capture = p.match(self.line)
                 if capture:
                     ret_present = True
@@ -218,12 +218,12 @@ class HeaderParser(object):
         self.seek_to('enum bpf_cmd {',
                      'Could not find start of bpf_cmd enum', 0)
         # Searches for either one or more BPF\w+ enums
-        bpf_p = re.compile('\s*(BPF\w+)+')
+        bpf_p = re.compile(r'\s*(BPF\w+)+')
         # Searches for an enum entry assigned to another entry,
         # for e.g. BPF_PROG_RUN = BPF_PROG_TEST_RUN, which is
         # not documented hence should be skipped in check to
         # determine if the right number of syscalls are documented
-        assign_p = re.compile('\s*(BPF\w+)\s*=\s*(BPF\w+)')
+        assign_p = re.compile(r'\s*(BPF\w+)\s*=\s*(BPF\w+)')
         bpf_cmd_str = ''
         while True:
             capture = assign_p.match(self.line)
@@ -238,7 +238,7 @@ class HeaderParser(object):
                 break
             self.line = self.reader.readline()
         # Find the number of occurences of BPF\w+
-        self.enum_syscalls = re.findall('(BPF\w+)+', bpf_cmd_str)
+        self.enum_syscalls = re.findall(r'(BPF\w+)+', bpf_cmd_str)
 
     def parse_desc_helpers(self):
         self.seek_to(helpersDocStart,
@@ -261,7 +261,7 @@ class HeaderParser(object):
         self.seek_to('#define __BPF_FUNC_MAPPER(FN)',
                      'Could not find start of eBPF helper definition list')
         # Searches for one FN(\w+) define or a backslash for newline
-        p = re.compile('\s*FN\((\w+)\)|\\\\')
+        p = re.compile(r'\s*FN\((\w+)\)|\\\\')
         fn_defines_str = ''
         i = 1  # 'unspec' is skipped as mentioned above
         while True:
@@ -274,7 +274,7 @@ class HeaderParser(object):
                 break
             self.line = self.reader.readline()
         # Find the number of occurences of FN(\w+)
-        self.define_unique_helpers = re.findall('FN\(\w+\)', fn_defines_str)
+        self.define_unique_helpers = re.findall(r'FN\(\w+\)', fn_defines_str)
 
     def assign_helper_values(self):
         seen_helpers = set()
@@ -407,7 +407,7 @@ class PrinterRST(Printer):
         try:
             cmd = ['git', 'log', '-1', '--pretty=format:%cs', '--no-patch',
                    '-L',
-                   '/{}/,/\*\//:include/uapi/linux/bpf.h'.format(delimiter)]
+                   'r/{}/,/\*\//:include/uapi/linux/bpf.h'.format(delimiter)]
             date = subprocess.run(cmd, cwd=linuxRoot,
                                   capture_output=True, check=True)
             return date.stdout.decode().rstrip()
@@ -478,7 +478,7 @@ HELPERS
                             date=lastUpdate))
 
     def print_footer(self):
-        footer = '''
+        footer = r'''
 EXAMPLES
 ========
 
@@ -577,7 +577,7 @@ SEE ALSO
 
         comma = ''
         for a in proto['args']:
-            one_arg = '{}{}'.format(comma, a['type'])
+            one_arg = r'{}{}'.format(comma, a['type'])
             if a['name']:
                 if a['star']:
                     one_arg += ' {}**\ '.format(a['star'].replace('*', '\\*'))
