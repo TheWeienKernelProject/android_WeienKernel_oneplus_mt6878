@@ -30,8 +30,8 @@
 #include <linux/build_bug.h>
 #include <linux/static_call_types.h>
 #include <linux/instruction_pointer.h>
-#include <asm/byteorder.h>
 #include <linux/array_size.h>
+#include <asm/byteorder.h>
 
 #include <uapi/linux/kernel.h>
 
