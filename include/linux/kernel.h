@@ -31,6 +31,7 @@
 #include <linux/static_call_types.h>
 #include <linux/instruction_pointer.h>
 #include <asm/byteorder.h>
+#include <linux/array_size.h>
 
 #include <uapi/linux/kernel.h>
 
@@ -52,7 +53,6 @@
  * ARRAY_SIZE - get the number of elements in array @arr
  * @arr: array to be sized
  */
-#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
 
 #define PTR_IF(cond, ptr)	((cond) ? (ptr) : NULL)
 
