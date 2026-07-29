@@ -34,7 +34,8 @@ make -j$(nproc) Image | tee ~/build.log
 |---------|-------------|
 | **KVM(EL2 Locked)** | ✅ |
 | **DroidSpaces** | ✅ |
-
+| **IPSet** | ✅ |
+| **OnePlus Game Fetures** | ✅ |
 敬请期待其他配置
 
 # How do I submit patches to Android Common Kernels
