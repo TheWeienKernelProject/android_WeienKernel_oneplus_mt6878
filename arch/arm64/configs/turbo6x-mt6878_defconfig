@@ -102,7 +102,7 @@ CONFIG_BPF_JIT_ALWAYS_ON=y
 CONFIG_BPF_JIT_DEFAULT_ON=y
 # CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set
 # CONFIG_BPF_PRELOAD is not set
-# CONFIG_BPF_LSM is not set
+CONFIG_BPF_LSM=y
 # end of BPF subsystem
 
 CONFIG_PREEMPT_BUILD=y
@@ -532,7 +532,7 @@ CONFIG_UNWIND_PATCH_PAC_INTO_SCS=y
 #
 # Boot options
 #
-CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.page_alloc.sample=10 kasan.stacktrace=off kvm-arm.mode=vhe bootconfig ioremap_guard"
+CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.page_alloc.sample=10 kasan.stacktrace=off kvm-arm.mode=nvhe bootconfig ioremap_guard"
 # CONFIG_CMDLINE_FROM_BOOTLOADER is not set
 CONFIG_CMDLINE_EXTEND=y
 # CONFIG_CMDLINE_FORCE is not set
@@ -658,7 +658,7 @@ CONFIG_KVM_XFER_TO_GUEST_WORK=y
 CONFIG_VIRTUALIZATION=y
 CONFIG_KVM=y
 CONFIG_KVM_ARM_HOST=y
-# CONFIG_NVHE_EL2_DEBUG is not set
+CONFIG_NVHE_EL2_DEBUG=y
 CONFIG_PKVM_MODULE_PATH="/lib/modules/"
 CONFIG_CPU_MITIGATIONS=y
 
@@ -9097,7 +9097,7 @@ CONFIG_OPLUS_FEATURE_SLC=m
 CONFIG_OPLUS_OMRG=m
 # CONFIG_OPLUS_FEATURE_ABNORMAL_FLAG is not set
 CONFIG_OPLUS_FEATURE_WAKER_IDENTIFY=m
-CONFIG_OPLUS_FEATURE_GAME_ENABLE=y
+CONFIG_OPLUS_FEATURE_GAME_ENABLE=m
 CONFIG_OPLUS_FEATURE_CPU_GAME=m
 CONFIG_OPLUS_FEATURE_OLC=m
 CONFIG_OPLUS_FEATURE_FEEDBACK=m
