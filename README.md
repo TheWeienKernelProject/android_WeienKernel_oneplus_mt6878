@@ -35,6 +35,7 @@ make -j$(nproc) Image | tee ~/build.log
 | **KVM(EL2 Locked)** | ✅ |
 | **DroidSpaces** | ✅ |
 | **IPSet** | ✅ |
+| **BBR** | ✅ |
 
 注意KVM不可用 因为EL2锁死
 敬请期待其他配置
