@@ -10,16 +10,16 @@ Turbo6X exhanced kernel
 
 ## U Can Build With This: 你可以这样编译 ##
 ```
-cd android_WeienKernel_oneplus_mt6878
-```
-```
 cp android_WeienKernel_modules_and_devicetree_oneplus_mt6878/vendor /
+```
+```
+cd android_WeienKernel_oneplus_mt6878
 ```
 ```
 使用内核集成脚本 Use Kernel Setup Scripts
 ```
 ```
-make turbo6x-mt6878_defconfig addon.config
+make turbo6x-mt6878_defconfig
 ```
 ```
 make -j$(nproc) Image | tee ~/build.log
