@@ -32,12 +32,10 @@ make -j$(nproc) Image | tee ~/build.log
 ## kernel support
 | Supported 支持 | Satus 状态 |
 |---------|-------------|
-| **KVM(EL2 Locked)** | ✅ |
 | **DroidSpaces** | ✅ |
 | **IPSet** | ✅ |
 | **BBR** | ✅ |
 
-注意KVM不可用 因为EL2锁死
 敬请期待其他配置
 
 # How do I submit patches to Android Common Kernels
