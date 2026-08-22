@@ -2,10 +2,10 @@
 #include <linux/kernel.h>
 
 #define VERSION 1
-#define pr_fmt(fmt) "my_builtin: " fmt
+#define pr_fmt(fmt) "wktools: " fmt
 
 static int __init wkpr_info(void)
 {
-    pr_info("wktools: HelloWorld！\n");
+    pr_info("HelloWorld！\n");
     return 0;
 }
