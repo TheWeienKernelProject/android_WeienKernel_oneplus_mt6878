@@ -1,3 +1,15 @@
+menuconfig WK_FUTURE
+    bool "WK Future Support"
+    default y
+    help
+      Enable WK Future feature support.
+
+if WK_FUTURE
+
 config WK_FUTURE_PRINFO_TEST
-  bool "HelloWorld"
-  default y
+    bool "Test"
+    default y
+    help
+      Enable the prinfo test.
+
+endif
