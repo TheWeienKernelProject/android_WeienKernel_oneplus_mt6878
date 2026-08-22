@@ -1,0 +1,3 @@
+config WK_FUTURE_PRINFO_TEST
+  bool "HelloWorld"
+  default y
