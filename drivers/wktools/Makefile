@@ -1,0 +1,1 @@
+obj-$(CONFIG_WK_FUTURE_PRINFO_TEST) += info.o
