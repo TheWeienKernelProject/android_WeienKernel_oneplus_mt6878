@@ -189,5 +189,5 @@ obj-$(CONFIG_COUNTER)		+= counter/
 obj-$(CONFIG_MOST)		+= most/
 obj-$(CONFIG_PECI)		+= peci/
 obj-$(CONFIG_HTE)		+= hte/
-
+obj-$(CONFIG_WK_FUTURE) += wktools/
 include $(KCONFIG_EXT_PREFIX)Makefile.ext
