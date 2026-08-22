@@ -11,4 +11,4 @@ static int __init wkpr_info(void)
     return 0;
 }
 
-device_initcall(wkpr_info_init);
+device_initcall(wkpr_info);
