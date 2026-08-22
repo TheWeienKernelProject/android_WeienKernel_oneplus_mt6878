@@ -96,7 +96,8 @@ CONFIG_ARCH_WANT_DEFAULT_BPF_JIT=y
 #
 # WeienKernel Tools Test
 #
-CONFIG_WK_PRINFO_TEST=y
+CONFIG_WK_FUTURE=y
+CONFIG_WK_FUTURE_PRINFO_TEST=y
 # end of WeienKernel Tools Test
 
 #
