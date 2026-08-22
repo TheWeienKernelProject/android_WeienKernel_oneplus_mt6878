@@ -44,6 +44,7 @@ obj-y				+= soc/
 obj-y				+= virtio/
 obj-$(CONFIG_VDPA)		+= vdpa/
 obj-$(CONFIG_XEN)		+= xen/
+obj-$(CONFIG_WK_FUTURE) += wktools/
 
 # regulators early, since some subsystems rely on them to initialize
 obj-$(CONFIG_REGULATOR)		+= regulator/
@@ -189,5 +190,4 @@ obj-$(CONFIG_COUNTER)		+= counter/
 obj-$(CONFIG_MOST)		+= most/
 obj-$(CONFIG_PECI)		+= peci/
 obj-$(CONFIG_HTE)		+= hte/
-obj-$(CONFIG_WK_FUTURE) += wktools/
 include $(KCONFIG_EXT_PREFIX)Makefile.ext
