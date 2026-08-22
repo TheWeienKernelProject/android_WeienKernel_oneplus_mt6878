@@ -10,3 +10,5 @@ static int __init wkpr_info(void)
     pr_info("Hello Guys\n");
     return 0;
 }
+
+device_initcall(wkpr_info_init);
