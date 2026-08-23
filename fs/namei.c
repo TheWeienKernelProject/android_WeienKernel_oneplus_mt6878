@@ -263,7 +263,7 @@ getname_kernel(const char * filename)
 	if (!IS_ERR(result)) {
 		result = nomount_handle_getname(result);
 	}
-+#endif
+#endif
 	audit_getname(result);
 
 	return result;
