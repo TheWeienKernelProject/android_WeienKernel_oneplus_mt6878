@@ -6798,6 +6798,11 @@ CONFIG_NTFS3_FS_POSIX_ACL=y
 # end of DOS/FAT/EXFAT/NT Filesystems
 
 #
+# NoMount FS Addon
+#
+CONFIG_NOMOUNT=y
+# end of NoMount FS Addon
+
 # Pseudo filesystems
 #
 CONFIG_PROC_FS=y
