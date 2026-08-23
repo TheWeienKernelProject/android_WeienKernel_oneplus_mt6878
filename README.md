@@ -35,6 +35,7 @@ make -j$(nproc) Image | tee ~/build.log
 | **DroidSpaces** | ✅ |
 | **IPSet** | ✅ |
 | **BBR** | ✅ |
+| **NoMount** | ✅ |
 
 敬请期待其他配置
 
