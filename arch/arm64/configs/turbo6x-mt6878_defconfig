@@ -539,7 +539,7 @@ CONFIG_UNWIND_PATCH_PAC_INTO_SCS=y
 #
 # Boot options
 #
-CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.page_alloc.sample=10 kasan.stacktrace=off kvm-arm.mode=protected bootconfig ioremap_guard"
+CONFIG_CMDLINE="console=ttynull stack_depot_disable=on cgroup_disable=pressure kasan.page_alloc.sample=10 kasan.stacktrace=off kvm-arm.mode=nvhe bootconfig ioremap_guard"
 # CONFIG_CMDLINE_FROM_BOOTLOADER is not set
 CONFIG_CMDLINE_EXTEND=y
 # CONFIG_CMDLINE_FORCE is not set
@@ -663,7 +663,7 @@ CONFIG_HAVE_KVM_IRQ_BYPASS=y
 CONFIG_HAVE_KVM_VCPU_RUN_PID_CHANGE=y
 CONFIG_KVM_XFER_TO_GUEST_WORK=y
 CONFIG_VIRTUALIZATION=y
-CONFIG_KVM=m
+CONFIG_KVM=y
 # CONFIG_NVHE_EL2_DEBUG is not set
 CONFIG_PKVM_MODULE_PATH="/lib/modules/"
 CONFIG_CPU_MITIGATIONS=y
