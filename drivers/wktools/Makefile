@@ -1,1 +1,1 @@
-obj-$(CONFIG_WK_FUTURE_PRINFO_TEST) += info.o
+obj-$(CONFIG_WK_FUTURE_EXP_PROTECT_PARTITION) += protect.o
