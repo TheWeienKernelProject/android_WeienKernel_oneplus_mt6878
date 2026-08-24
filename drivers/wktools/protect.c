@@ -1,113 +1,90 @@
 #include <linux/init.h>
 #include <linux/kernel.h>
-#include <linux/device-mapper.h>
-#include <linux/bio.h>
 #include <linux/blkdev.h>
+#include <linux/blk-mq.h>
 #include <linux/string.h>
 
-#define DM_MSG_PREFIX "protect"
+#define WK_PROTECT_VERSION "1.0"
 
-static const char *protected_devices[] = {
-    "sdc40",
-    NULL 
-};
-
-struct protect_c {
-    struct dm_dev *dev;
-    sector_t start;
+static const char *protected_disks[] = {
+    "sdc40", /* boot_a */
+    NULL               
 };
 
 static bool is_protected_device(const char *name)
 {
     int i;
-    for (i = 0; protected_devices[i] != NULL; i++) {
-        if (strcmp(name, protected_devices[i]) == 0) {
+    if (!name) return false;
+    for (i = 0; protected_disks[i] != NULL; i++) {
+        if (strcmp(name, protected_disks[i]) == 0) {
             return true;
         }
     }
     return false;
 }
 
-static int protect_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+static blk_qc_t wk_protect_submit_bio(struct bio *bio)
+(
+    if (op_is_write(bio_op(bio))) {
+        struct gendisk *disk = bio->bi_bdev->bd_disk;
+        if (disk && is_protected_device(disk->disk_name)) {
+            printk_ratelimited(KERN_ERR "wkPartitionProtecter: Write to '%s' blocked!\n", 
+                               disk->disk_name);
+            bio_io_error(bio);
+            return BLK_QC_T_NONE; 
+        }
+    }
+    
+    return bio->bi_bdev->bd_disk->fops->submit_bio(bio);
+}
+
+static struct blk_filter_ops wk_protect_filter_ops = {
+    .submit_bio = wk_protect_submit_bio,
+};
+
+static int __init wk_protect_init(void)
 {
-    struct protect_c *pc;
-    int r;
+    struct block_device *bdev;
+    int i, attached_count = 0;
 
-    if (argc != 2) {
-        ti->error = "Invalid argument count";
-        return -EINVAL;
+    for (i = 0; protected_disks[i] != NULL; i++) {
+        bdev = blkdev_get_by_path(protected_disks[i], FMODE_READ, NULL);
+        if (IS_ERR(bdev)) {
+            printk(KERN_WARNING "wkPartitionProtecter: Device '%s' not found, skipping.\n", 
+                   protected_disks[i]);
+            continue;
+        }
+        
+        if (blk_filter_attach(bdev, &wk_protect_filter_ops) == 0) {
+            printk(KERN_INFO "wkPartitionProtecter: Successfully protected '%s'.\n", 
+                   protected_disks[i]);
+            attached_count++;
+        } else {
+            printk(KERN_ERR "wkPartitionProtecter: Failed to attach filter to '%s'.\n", 
+                   protected_disks[i]);
+        }
+
+        blkdev_put(bdev, FMODE_READ);
     }
 
-    if (!is_protected_device(argv[0])) {
-        ti->error = "Device not in protected list";
-        return -EPERM;
-    }
-
-    pc = kzalloc(sizeof(*pc), GFP_KERNEL);
-    if (!pc) return -ENOMEM;
-
-    r = dm_get_device(ti, argv[0], dm_table_get_mode(ti->table), &pc->dev);
-    if (r) {
-        kfree(pc);
-        ti->error = "Device lookup failed";
-        return r;
-    }
-
-    if (kstrtoull(argv[1], 10, (unsigned long long *)&pc->start)) {
-        dm_put_device(ti, pc->dev);
-        kfree(pc);
-        ti->error = "Invalid start sector";
-        return -EINVAL;
-    }
-
-    ti->private = pc;
+    printk(KERN_INFO "wkPartitionProtecter v%s loaded. Protected %d device(s).\n", 
+           WK_PROTECT_VERSION, attached_count);
     return 0;
 }
 
-static void protect_dtr(struct dm_target *ti)
+static void __exit wk_protect_exit(void)
 {
-    struct protect_c *pc = ti->private;
-    dm_put_device(ti, pc->dev);
-    kfree(pc);
-}
-
-static int protect_map(struct dm_target *ti, struct bio *bio)
-{
-    struct protect_c *pc = ti->private;
-
-    if (op_is_write(bio_op(bio))) {
-        bio_io_error(bio);
-        return DM_MAPIO_SUBMITTED;
+    struct block_device *bdev;
+    int i;
+    for (i = 0; protected_disks[i] != NULL; i++) {
+        bdev = blkdev_get_by_path(protected_disks[i], FMODE_READ, NULL);
+        if (!IS_ERR(bdev)) {
+            blk_filter_detach(bdev);
+            blkdev_put(bdev, FMODE_READ);
+        }
     }
-
-    bio_set_dev(bio, pc->dev->bdev);
-    bio->bi_iter.bi_sector = pc->start + bio->bi_iter.bi_sector;
-    return DM_MAPIO_REMAPPED;
+    printk(KERN_INFO "wkPartitionProtecter unloaded.\n");
 }
 
-static struct target_type protect_target = {
-    .name    = "protect",
-    .version = {1, 0, 0},
-    .ctr     = protect_ctr,
-    .dtr     = protect_dtr,
-    .map     = protect_map,
-};
-
-static int __init wk_dm_protect_init(void)
-{
-    int r = dm_register_target(&protect_target);
-    if (r < 0) {
-        DMERR("Failed to register protect target: %d", r);
-    } else {
-        pr_info("wkPartitionProtecter: Partition Protecter load successfully.\n");
-    }
-    return r;
-}
-
-static void __exit wk_dm_protect_exit(void)
-{
-    dm_unregister_target(&protect_target);
-}
-
-__initcall(wk_dm_protect_init);
-__exitcall(wk_dm_protect_exit);
+__initcall(wk_protect_init);
+__exitcall(wk_protect_exit);
