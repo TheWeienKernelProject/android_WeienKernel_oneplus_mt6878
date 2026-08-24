@@ -93,7 +93,7 @@ static struct target_type protect_target = {
     .map     = protect_map,
 };
 
-static int __init dm_protect_init(void)
+static int __init wk_dm_protect_init(void)
 {
     int r = dm_register_target(&protect_target);
     if (r < 0) {
