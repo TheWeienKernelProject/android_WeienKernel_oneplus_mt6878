@@ -1,6 +1,6 @@
 # The Weien Kernel Project #
 
-现已发布ColorOS16.0.5.1100版本 内核被同步到了android14-6.1 6.1.175 正在等待官方仓库公布源码再进行构建
+现已发布ColorOS16.0.5.1100版本 内核被更新到了6.1.157 正在等待官方仓库公布源码再进行构建
 
 # info #
 Turbo6X exhanced kernel
