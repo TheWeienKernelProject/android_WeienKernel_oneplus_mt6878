@@ -29,7 +29,7 @@ static void hooked_submit_bio(struct bio *bio)
 
 static struct ftrace_ops ftrace_ops = {
     .func = (void *)hooked_submit_bio, 
-    .flags = FTRACE_OPS_FL_SAVE_REGS | FTRACE_OPS_FL_RECURSION_SAFE,
+    .flags = FTRACE_OPS_FL_SAVE_REGS | FTRACE_OPS_FL_RECURSION,
 };
 
 static int __init wk_protect_init(void)
