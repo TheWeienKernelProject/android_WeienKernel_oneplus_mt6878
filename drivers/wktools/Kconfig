@@ -8,7 +8,7 @@ if WK_FUTURE
 
 config WK_FUTURE_EXP_PROTECT_PARTITION
     bool "Protect some devices partition"
-    default y
+    default n
     help
       protect device partition.
 
