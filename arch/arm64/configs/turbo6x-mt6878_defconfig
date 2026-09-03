@@ -101,6 +101,12 @@ CONFIG_WK_FUTURE=y
 # end of WeienKernel Tools Test
 
 #
+# ReKernel Support
+#
+CONFIG_REKERNEL=y
+CONFIG_REKERNEL_NETWORK=n
+# end of ReKernel Support
+
 # BPF subsystem
 #
 CONFIG_BPF_SYSCALL=y
