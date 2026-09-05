@@ -8,6 +8,10 @@
 #include <linux/prefetch.h>
 #include "mount.h"
 
+#ifdef CONFIG_NOMOUNT
+#include <linux/nomount.h>
+#endif
+	
 struct prepend_buffer {
 	char *buf;
 	int len;
@@ -271,10 +275,25 @@ char *d_path(const struct path *path, char *buf, int buflen)
 	struct path root;
 
 #ifdef CONFIG_NOMOUNT
-	char *nm_path = nomount_handle_dpath(path, buf, buflen);
-	if (unlikely(nm_path)) {
-		return nm_path;
-	}
+	const char *v_path;
+	int len;
+
+    if (path->dentry && path->dentry->d_inode &&
+		test_bit(path->dentry->d_inode->i_ino & (NOMOUNT_BLOOM_SIZE - 1), nomount_bloom)) {
+        nm_enter();
+        v_path = nomount_get_static_vpath(path->dentry->d_inode);
+        
+        if (v_path) {
+            len = strlen(v_path);
+            if (buflen >= len + 1) {
+                prepend_char(&b, 0);
+                prepend(&b, v_path, len);
+                nm_exit();
+                return extract_string(&b);
+            }
+        }
+		nm_exit();
+    }
 #endif
 
 	/*
