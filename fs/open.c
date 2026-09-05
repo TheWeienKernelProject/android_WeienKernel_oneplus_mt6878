@@ -33,9 +33,6 @@
 #include <linux/dnotify.h>
 #include <linux/compat.h>
 #include <linux/mnt_idmapping.h>
-#ifdef CONFIG_NOMOUNT
-#include <linux/nomount.h>
-#endif
 #include "internal.h"
 #include <trace/hooks/syscall_check.h>
 
@@ -451,16 +448,6 @@ retry:
 		goto out;
 
 	inode = d_backing_inode(path.dentry);
-	
-#ifdef CONFIG_NOMOUNT
-    /* spoof writable attribute */
-    if (!nomount_should_skip() && nomount_is_injected_file(inode)) {
-        if (mode & MAY_WRITE) {
-            res = -EACCES; // non-writable
-            goto out_path_release;
-        }
-    }
-#endif
 	
 	if ((mode & MAY_EXEC) && S_ISREG(inode->i_mode)) {
 		/*
