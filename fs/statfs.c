@@ -12,7 +12,7 @@
 #include "internal.h"
 
 #ifdef CONFIG_NOMOUNT
-extern void nomount_spoof_statfs(const struct path *path, struct kstatfs *buf);
+#include <linux/nomount.h>
 #endif
 
 static int flags_by_mnt(int mnt_flags)
@@ -95,7 +95,8 @@ int vfs_statfs(const struct path *path, struct kstatfs *buf)
 	if (!error)
 		buf->f_flags = calculate_f_flags(path->mnt);
 #ifdef CONFIG_NOMOUNT
-	nomount_spoof_statfs(path, buf);
+	if (!nomount_should_skip())
+		nomount_spoof_statfs(path, buf);
 #endif
 	return error;
 }
