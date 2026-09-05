@@ -123,14 +123,8 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
 	if (inode->i_op->getattr)
 		return inode->i_op->getattr(mnt_userns, path, stat,
 	                             request_mask, query_flags);
-        return ret;
-	}
 	generic_fillattr(mnt_userns, inode, stat);
 
-#ifdef CONFIG_NOMOUNT
-    if (!nomount_should_skip())
-   	nomount_spoof_stat(path, stat);
-#endif
 	return 0;
 }
 EXPORT_SYMBOL(vfs_getattr_nosec);
@@ -164,9 +158,6 @@ int vfs_getattr(const struct path *path, struct kstat *stat,
 	retval = security_inode_getattr(path);
 	if (retval)
 		return retval;
-#ifdef CONFIG_NOMOUNT
-    return nomount_handle_getattr(vfs_getattr_nosec(path, stat, request_mask, query_flags), path, stat);
-#else
 	return vfs_getattr_nosec(path, stat, request_mask, query_flags);
 #endif
 }
