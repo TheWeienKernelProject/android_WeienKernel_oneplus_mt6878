@@ -20,6 +20,9 @@
 #include <linux/shmem_fs.h>
 #include <linux/uaccess.h>
 #include <linux/pkeys.h>
+#ifdef CONFIG_NOMOUNT
+#include <linux/nomount.h>
+#endif
 #include <trace/hooks/mm.h>
 
 #include <asm/elf.h>
@@ -294,7 +297,9 @@ show_map_vma(struct seq_file *m, struct vm_area_struct *vma)
 		dev = inode->i_sb->s_dev;
 		ino = inode->i_ino;
 #ifdef CONFIG_NOMOUNT
-		nomount_spoof_mmap_metadata(inode, &dev, &ino);
+		if (!nomount_should_skip()) {
+			nomount_spoof_mmap_metadata(inode, &dev, &ino);
+		}
 #endif
 		pgoff = ((loff_t)vma->vm_pgoff) << PAGE_SHIFT;
 	}
