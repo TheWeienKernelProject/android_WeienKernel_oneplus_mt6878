@@ -11,23 +11,6 @@ Turbo6X exhanced kernel
 2.在Recovery里面卡刷刷入 Recovery Sideload      
 3.等待启动 boot Phone           
 
-## U Can Build With This: 你可以这样编译 ##
-```
-cp android_WeienKernel_modules_and_devicetree_oneplus_mt6878/vendor /
-```
-```
-cd android_WeienKernel_oneplus_mt6878
-```
-```
-使用内核集成脚本 Use Kernel Setup Scripts
-```
-```
-make turbo6x-mt6878_defconfig
-```
-```
-make -j$(nproc) Image | tee ~/build.log
-```
-
 | Kernel Version 内核版本 | 
 |----------------|
 | Linux Kernel 6.1.134 |
