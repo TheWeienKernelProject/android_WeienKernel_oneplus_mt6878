@@ -19,10 +19,6 @@
 #include <linux/pagemap.h>
 #include <linux/compat.h>
 
-#ifdef CONFIG_NOMOUNT
-#include <linux/nomount.h>
-#endif
-
 #include <linux/uaccess.h>
 #include <asm/unistd.h>
 
@@ -100,7 +96,6 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
 {
 	struct user_namespace *mnt_userns;
 	struct inode *inode = d_backing_inode(path->dentry);
-    int ret = 0;
 	
 	memset(stat, 0, sizeof(*stat));
 	stat->result_mask |= STATX_BASIC_STATS;
@@ -125,14 +120,9 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
 				  STATX_ATTR_DAX);
 
 	mnt_userns = mnt_user_ns(path->mnt);
-	if (inode->i_op->getattr) {
-		ret = inode->i_op->getattr(mnt_userns, path, stat,
+	if (inode->i_op->getattr)
+		return inode->i_op->getattr(mnt_userns, path, stat,
 	                             request_mask, query_flags);
-
-#ifdef CONFIG_NOMOUNT
-        if (ret == 0 && !nomount_should_skip())
-           nomount_spoof_stat(path, stat);
-#endif
         return ret;
 	}
 	generic_fillattr(mnt_userns, inode, stat);
@@ -144,10 +134,6 @@ int vfs_getattr_nosec(const struct path *path, struct kstat *stat,
 	return 0;
 }
 EXPORT_SYMBOL(vfs_getattr_nosec);
-
-#ifdef CONFIG_NOMOUNT
-extern int nomount_handle_getattr(int ret, const struct path *path, struct kstat *stat);
-#endif
 
 /*
  * vfs_getattr - Get the enhanced basic attributes of a file
