@@ -407,7 +407,7 @@ class PrinterRST(Printer):
         try:
             cmd = ['git', 'log', '-1', '--pretty=format:%cs', '--no-patch',
                    '-L',
-                   'r/{}/,/\*\//:include/uapi/linux/bpf.h'.format(delimiter)]
+                   r'{}/{},/\*\//:include/uapi/linux/bpf.h'.format(delimiter)
             date = subprocess.run(cmd, cwd=linuxRoot,
                                   capture_output=True, check=True)
             return date.stdout.decode().rstrip()
@@ -580,7 +580,7 @@ SEE ALSO
             one_arg = r'{}{}'.format(comma, a['type'])
             if a['name']:
                 if a['star']:
-                    one_arg += ' {}**\ '.format(a['star'].replace('*', '\\*'))
+                    one_arg += r' {}**\ '.format(a['star'].replace('*', '\\*'))
                 else:
                     one_arg += '** '
                 one_arg += '*{}*\\ **'.format(a['name'])
