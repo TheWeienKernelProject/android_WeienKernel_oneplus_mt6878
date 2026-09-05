@@ -99,9 +99,6 @@
 #include <linux/cn_proc.h>
 #include <linux/cpufreq_times.h>
 #include <linux/dma-buf.h>
-#ifdef CONFIG_NOMOUNT
-#include <linux/nomount.h>
-#endif
 #include <trace/events/oom.h>
 #include <trace/hooks/sched.h>
 #include "internal.h"
@@ -1842,14 +1839,7 @@ static int do_proc_readlink(const struct path *path, char __user *buffer, int bu
 	char *tmp = kmalloc(PATH_MAX, GFP_KERNEL);
 	char *pathname;
 	int len;
-
-#ifdef CONFIG_NOMOUNT
-	if (!nomount_should_skip() && path->dentry) {
-        ssize_t nm_ret = nomount_readlink_hook(d_backing_inode(path->dentry), buffer, buflen);
-        if (nm_ret > 0)
-            return nm_ret;
-    }
-#endif
+	
 	if (!tmp)
 		return -ENOMEM;
 
