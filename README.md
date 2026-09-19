@@ -16,4 +16,11 @@ turbo6x exhanced kernel
 | Supported 支持 | Satus 状态 |
 |---------|-------------|
 | **DroidSpaces** | ✅ |
-*更多配置请等待
+
+*更多配置请等待之后
+
+鸣谢名单
+
+DroidSpaces @ravindu644
+
+NoMount @maxsteeel
