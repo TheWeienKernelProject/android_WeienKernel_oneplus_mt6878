@@ -1,0 +1,28 @@
+CONFIG_LOCALVERSION="-perf"
+
+#
+# CPU Frequency scaling
+#
+# CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL is not set
+CONFIG_CPU_FREQ_GOV_PERFORMANCE=y
+CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE=y
+
+#
+# General architecture-dependent options
+#
+CONFIG_PGO=y
+
+#
+# SLAB allocator options
+#
+CONFIG_KSM=y
+
+#
+# Kernel Features
+#
+CONFIG_SCHED_CLUSTER=y
+
+#
+# Scheduler features
+#
+CONFIG_SCHED_AUTOGROUP=y
