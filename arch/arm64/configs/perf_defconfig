@@ -21,9 +21,3 @@ CONFIG_KSM=y
 # Kernel Features
 #
 CONFIG_SCHED_CLUSTER=y
-
-#
-# Scheduler features
-#
-CONFIG_SCHED_AUTOGROUP=y
-CONFIG_CGROUP_PIDS=y
