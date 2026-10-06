@@ -16,8 +16,3 @@ CONFIG_PGO=y
 # SLAB allocator options
 #
 CONFIG_KSM=y
-
-#
-# Kernel Features
-#
-CONFIG_SCHED_CLUSTER=y
