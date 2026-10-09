@@ -11,6 +11,10 @@
   blk_start_plug
   cgroup_add_dfl_cftypes
   cgroup_add_legacy_cftypes
+  cpu_cgrp_subsys
+  css_task_iter_end
+  css_task_iter_next
+  css_task_iter_start
   console_printk
   cpufreq_frequency_table_get_index
   cpufreq_policy_transition_delay_us
@@ -389,3 +393,17 @@
   zero_pfn
   __traceiter_android_vh_init_adjust_zone_wmark
   __tracepoint_android_vh_init_adjust_zone_wmark
+  __traceiter_android_vh_resched_curr_lazy
+  __traceiter_android_vh_restore_curr_resched
+  __traceiter_android_vh_clear_curr_lazy
+  __tracepoint_android_vh_resched_curr_lazy
+  __tracepoint_android_vh_restore_curr_resched
+  __tracepoint_android_vh_clear_curr_lazy
+  __traceiter_android_vh_lock_delay_schedule
+  __traceiter_android_vh_lock_task_fork
+  __traceiter_android_vh_lock_task_exit
+  __tracepoint_android_vh_lock_delay_schedule
+  __tracepoint_android_vh_lock_task_fork
+  __tracepoint_android_vh_lock_task_exit
+  finish_rcuwait
+
