@@ -17,7 +17,7 @@ kernel version 6.1.157 OnePlus kernel base this kernel for ColorOS16(released ke
 -------
 Kernel Integrated:
 
-DroidSpaces
+DroidSpaces ＆ NoMount
 
 -------
 
