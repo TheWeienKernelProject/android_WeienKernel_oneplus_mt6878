@@ -58,11 +58,19 @@ cd kernel source
 cd kernel
 ```
 
-4.Integrate DroidSpaces patch
+4.Integrate DroidSpaces patch NoMount
 
 ```
 curl -Lo ds.patch https://raw.githubusercontent.com/ravindu644/Droidspaces-OSS/refs/heads/main/Documentation/resources/kernel-patches/GKI/below-kernel-6.12/001.GKI-below-6.12-fix_sysvipc_kabi_6_7_8.patch
 patch -p1 < ds.patch 
+```
+
+```
+git clone https://github.com/maxsteeel/nomount/ -b master --depth=1
+mkdir ~/mt6878/fs/nomount
+cp ~/nomount/kernel/src/* ~/mt6878/fs/nomount
+cd ~/mt6878/
+bash ~/nomount/kernel/setup.sh 
 ```
 
 5.Make config and export path
